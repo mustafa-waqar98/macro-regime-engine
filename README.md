@@ -13,7 +13,7 @@ A systematic macro research tool that takes real economic data as inputs, classi
   - **UUP:** USD Index bullish exposure
 - Classifies the current macro environment into one of these four regimes:
   - **Goldilocks** (PMI > 50, CPI < 2.5%) - Equities, Credit
-  - **Inflationary Boom** (PMI < 50, CPI > 2.5%) - Commodities, TIPS
+  - **Inflationary Boom** (PMI > 50, CPI > 2.5%) - Commodities, TIPS
   - **Stagflation** (PMI < 50, CPI > 2.5%) - Gold, Commodities
   - **Risk-Off / Deflation** (PMI < 50, CPI < 2.5%) - Long Bonds, Gold, USD
   - Shows how each asset class has historically performed in each regime
