@@ -1,11 +1,24 @@
 def pmi_classification(pmi, pmi_benchmark = 50.0):
-    if pmi > pmi_benchmark:
+    try:
+        clean_pmi = float(pmi)
+    except ValueError:
+        raise ValueError('Please input a numerical value')
+
+    if clean_pmi < 0 or clean_pmi > 100:
+        raise ValueError('Error: Please provide a PMI value between 0 and 100')
+
+    if clean_pmi > pmi_benchmark:
         return 'Expansion'
     else:
         return 'Contraction'
     
 def cpi_classification(cpi, cpi_benchmark = 2.5):
-    if cpi < cpi_benchmark:
+    try:
+        clean_cpi = float(cpi)
+    except ValueError:
+        raise ValueError('Please input a numerical value')
+    
+    if clean_cpi < cpi_benchmark:
         return 'Low Inflation'
     else:
         return 'High Inflation'
@@ -51,6 +64,3 @@ for test in test_cases:
     print(f' Overweight: {result['overweight']}')
     print(f' Underweight: {result['underweight']}')
     print()
-
-
-classify_regime(55, 2.1)
