@@ -52,15 +52,17 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
 
 # Test Cases
 test_cases = [
-    {'pmi': 55.0, 'cpi': 2.1},
-    {'pmi': 58.0, 'cpi': 5.4},
-    {'pmi': 47.0, 'cpi': 9.1},
-    {'pmi': 44.0, 'cpi': 1.2},
+    {'pmi': 55.0, 'cpi': 2.1, 'expected_regime': 'Goldilocks'},
+    {'pmi': 58.0, 'cpi': 5.4, 'expected_regime': 'Inflationary Boom'},
+    {'pmi': 47.0, 'cpi': 9.1, 'expected_regime': 'Stagflation'},
+    {'pmi': 44.0, 'cpi': 1.2, 'expected_regime': 'Risk-Off'},
 ]
 
 for test in test_cases:
     result = classify_regime(test['pmi'], test['cpi'])
+    assert result['regime'] == test['expected_regime'], f" Case {test['pmi']} Expected  {test['expected_regime']} but got {result['regime']}"
     print(f" PMI: {test['pmi']} | CPI: {test['cpi']}% | Regime: {result['regime']}")
     print(f" Overweight: {result['overweight']}")
     print(f" Underweight: {result['underweight']}")
+    
     print()
