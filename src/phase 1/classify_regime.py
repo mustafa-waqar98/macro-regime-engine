@@ -60,7 +60,7 @@ test_cases = [
 
 for test in test_cases:
     result = classify_regime(test['pmi'], test['cpi'])
-    print(f'PMI: {test['pmi']} | CPI: {test['cpi']}% | Regime: {result['regime']}')
-    print(f' Overweight: {result['overweight']}')
-    print(f' Underweight: {result['underweight']}')
+    print(f" PMI: {test['pmi']} | CPI: {test['cpi']}% | Regime: {result['regime']}")
+    print(f" Overweight: {result['overweight']}")
+    print(f" Underweight: {result['underweight']}")
     print()
