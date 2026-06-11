@@ -1,4 +1,4 @@
-REGIMES_BY_CONDITIONS = {('Expansion', 'Low Inflation'): 'Goldilocks',
+REGIME_BY_CONDITIONS = {('Expansion', 'Low Inflation'): 'Goldilocks',
                          ('Expansion', 'High Inflation'): 'Inflationary Boom',
                          ('Contraction', 'High Inflation'): 'Stagflation',
                          ('Contraction', 'Low Inflation'): 'Risk-Off',
@@ -49,7 +49,7 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
     pmi_status = pmi_classification(pmi, pmi_benchmark)
     cpi_status = cpi_classification(cpi, cpi_benchmark)
 
-    regime = REGIMES_BY_CONDITIONS[(pmi_status, cpi_status)]
+    regime = REGIME_BY_CONDITIONS[(pmi_status, cpi_status)]
     
     allocation = ALLOCATIONS_BY_REGIME[regime]
     overweight = allocation['overweight']
@@ -63,7 +63,7 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
 
 # Safety Check
 
-for conditions, regime in REGIMES_BY_CONDITIONS.items():
+for conditions, regime in REGIME_BY_CONDITIONS.items():
     assert regime in ALLOCATIONS_BY_REGIME, f" The conditions cell {conditions} maps to regime {regime}, but {regime} has no entry in ALLOCATIONS_BY_REGIME"
 
 
