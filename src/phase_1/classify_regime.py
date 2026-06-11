@@ -1,3 +1,18 @@
+REGIME_ALLOCATIONS = {'Goldilocks': 
+                        {'overweight': ['Equities', 'Credit'], 
+                         'underweight': ['Commodities', 'Gold']},
+                    'Inflationary Boom': 
+                        {'overweight': ['Commodities', 'TIPS'],
+                         'underweight': ['Bonds', 'USD']},
+                    'Stagflation': 
+                        {'overweight': ['Gold', 'Commodities'],
+                         'underweight': ['Equities', 'Duration']},
+                    'Risk-Off': 
+                        {'overweight': ['Long Bonds', 'Gold', 'USD'],
+                         'underweight': ['Equities', 'Credit']},
+
+                        }
+
 def pmi_classification(pmi, pmi_benchmark = 50.0):
     try:
         clean_pmi = float(pmi)
@@ -29,25 +44,21 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
 
     if pmi_status == 'Expansion' and cpi_status == 'Low Inflation':
         regime = 'Goldilocks'
-        overweight = ['Equities', 'Credit']
-        underweight = ['Commodities', 'Gold']
     elif pmi_status == 'Expansion' and cpi_status == 'High Inflation':
         regime = 'Inflationary Boom'
-        overweight = ['Commodities', 'TIPS']
-        underweight = ['Bonds', 'USD']
     elif pmi_status == 'Contraction' and cpi_status == 'High Inflation':
         regime = 'Stagflation'
-        overweight = ['Gold', 'Commodities']
-        underweight = ['Equities', 'Duration']
     else:
         regime = 'Risk-Off'
-        overweight = ['Long Bonds', 'Gold', 'USD']
-        underweight = ['Equities', 'Credit']
+
+    allocation = REGIME_ALLOCATIONS[regime]
+    overweight = allocation['overweight']
+    underweight = allocation['underweight']
 
     return {
         'regime': regime,
         'overweight': overweight,
-        'underweight': underweight
+        'underweight': underweight,
     }
 
 # Test Cases
