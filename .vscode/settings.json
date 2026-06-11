@@ -1,12 +1,12 @@
 {
     "editor.quickSuggestions": {
-        "other": false,
+        "other": true,
         "comments": false,
         "strings": false
     },
-    "editor.suggestOnTriggerCharacters": false,
+    "editor.suggestOnTriggerCharacters": true,
     "editor.inlineSuggest.enabled": false,
-    "editor.parameterHints.enabled": false,
-    "editor.wordBasedSuggestions": "off",
-    "editor.acceptSuggestionOnEnter": "off"
+    "editor.parameterHints.enabled": true,
+    "editor.wordBasedSuggestions": "matchingDocuments",
+    "editor.acceptSuggestionOnEnter": "on"
 }
