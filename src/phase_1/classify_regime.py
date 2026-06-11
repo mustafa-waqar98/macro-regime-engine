@@ -1,3 +1,10 @@
+REGIMES_BY_CONDITIONS = {('Expansion', 'Low Inflation'): 'Goldilocks',
+                         ('Expansion', 'High Inflation'): 'Inflationary Boom',
+                         ('Contraction', 'High Inflation'): 'Stagflation',
+                         ('Contraction', 'Low Inflation'): 'Risk-Off',
+                         
+                         }
+
 REGIME_ALLOCATIONS = {'Goldilocks': 
                         {'overweight': ['Equities', 'Credit'], 
                          'underweight': ['Commodities', 'Gold']},
@@ -42,15 +49,8 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
     pmi_status = pmi_classification(pmi, pmi_benchmark)
     cpi_status = cpi_classification(cpi, cpi_benchmark)
 
-    if pmi_status == 'Expansion' and cpi_status == 'Low Inflation':
-        regime = 'Goldilocks'
-    elif pmi_status == 'Expansion' and cpi_status == 'High Inflation':
-        regime = 'Inflationary Boom'
-    elif pmi_status == 'Contraction' and cpi_status == 'High Inflation':
-        regime = 'Stagflation'
-    else:
-        regime = 'Risk-Off'
-
+    regime = REGIMES_BY_CONDITIONS[(pmi_status, cpi_status)]
+    
     allocation = REGIME_ALLOCATIONS[regime]
     overweight = allocation['overweight']
     underweight = allocation['underweight']
