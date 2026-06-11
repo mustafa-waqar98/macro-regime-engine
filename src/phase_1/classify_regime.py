@@ -52,8 +52,8 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
     regime = REGIME_BY_CONDITIONS[(pmi_status, cpi_status)]
     
     allocation = ALLOCATIONS_BY_REGIME[regime]
-    overweight = allocation['overweight']
-    underweight = allocation['underweight']
+    overweight = list(allocation['overweight'])
+    underweight = list(allocation['underweight'])
 
     return {
         'regime': regime,
@@ -62,13 +62,10 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
     }
 
 # Safety Check
-
 for conditions, regime in REGIME_BY_CONDITIONS.items():
     assert regime in ALLOCATIONS_BY_REGIME, f" The conditions cell {conditions} maps to regime {regime}, but {regime} has no entry in ALLOCATIONS_BY_REGIME"
 
-
 print("")
-
 
 # Test Cases
 test_cases = [
