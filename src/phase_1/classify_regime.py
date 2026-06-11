@@ -61,6 +61,15 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
         'underweight': underweight,
     }
 
+# Safety Check
+
+for conditions, regime in REGIMES_BY_CONDITIONS.items():
+    assert regime in REGIME_ALLOCATIONS, f" The conditions cell {conditions} maps to regime {regime}, but {regime} has no entry in REGIME_ALLOCATIONS"
+
+
+print("")
+
+
 # Test Cases
 test_cases = [
     {'pmi': 55.0, 'cpi': 2.1, 'expected_regime': 'Goldilocks'},
