@@ -5,7 +5,7 @@ REGIMES_BY_CONDITIONS = {('Expansion', 'Low Inflation'): 'Goldilocks',
                          
                          }
 
-REGIME_ALLOCATIONS = {'Goldilocks': 
+ALLOCATIONS_BY_REGIME = {'Goldilocks': 
                         {'overweight': ['Equities', 'Credit'], 
                          'underweight': ['Commodities', 'Gold']},
                     'Inflationary Boom': 
@@ -51,7 +51,7 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
 
     regime = REGIMES_BY_CONDITIONS[(pmi_status, cpi_status)]
     
-    allocation = REGIME_ALLOCATIONS[regime]
+    allocation = ALLOCATIONS_BY_REGIME[regime]
     overweight = allocation['overweight']
     underweight = allocation['underweight']
 
@@ -64,7 +64,7 @@ def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
 # Safety Check
 
 for conditions, regime in REGIMES_BY_CONDITIONS.items():
-    assert regime in REGIME_ALLOCATIONS, f" The conditions cell {conditions} maps to regime {regime}, but {regime} has no entry in REGIME_ALLOCATIONS"
+    assert regime in ALLOCATIONS_BY_REGIME, f" The conditions cell {conditions} maps to regime {regime}, but {regime} has no entry in ALLOCATIONS_BY_REGIME"
 
 
 print("")
