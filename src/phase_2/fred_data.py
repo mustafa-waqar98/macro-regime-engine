@@ -19,6 +19,11 @@ def fetch_pmi():
 
     return pmi_series
 
+def smooth(series, window=3):
+    rolling_mean = series.rolling(window).mean()
+
+    return rolling_mean
+
 def cpi_to_yoy(cpi_level):
     transform = (cpi_level / cpi_level.shift(12) - 1) * 100
     
@@ -49,3 +54,5 @@ if __name__ == '__main__':
     my_series2 = pd.Series([np.nan, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, np.nan, np.nan])
     result = latest_valid_date(my_series1)
     print(result)
+
+    print(smooth(pd.Series([3, 6, 9, 12])))
