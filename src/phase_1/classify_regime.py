@@ -20,14 +20,14 @@ ALLOCATIONS_BY_REGIME = {'Goldilocks':
 
                         }
 
-def pmi_classification(pmi, pmi_benchmark = 50.0):
+def pmi_classification(pmi, pmi_benchmark = 0.0):
     try:
         clean_pmi = float(pmi)
     except ValueError:
         raise ValueError('Please input a numerical value')
 
-    if clean_pmi < 0 or clean_pmi > 100:
-        raise ValueError('Error: Please provide a PMI value between 0 and 100')
+    if clean_pmi < -100 or clean_pmi > 100:
+        raise ValueError('Error: Please provide a PMI value between -100 and 100')
 
     if clean_pmi > pmi_benchmark:
         return 'Expansion'
@@ -45,7 +45,7 @@ def cpi_classification(cpi, cpi_benchmark = 2.5):
     else:
         return 'High Inflation'
     
-def classify_regime(pmi, cpi, pmi_benchmark = 50.0, cpi_benchmark = 2.5):
+def classify_regime(pmi, cpi, pmi_benchmark = 0.0, cpi_benchmark = 2.5):
     pmi_status = pmi_classification(pmi, pmi_benchmark)
     cpi_status = cpi_classification(cpi, cpi_benchmark)
 
@@ -69,10 +69,10 @@ print("")
 
 # Test Cases
 test_cases = [
-    {'pmi': 55.0, 'cpi': 2.1, 'expected_regime': 'Goldilocks', 'expected_overweight': ['Equities', 'Credit'],'expected_underweight': ['Commodities', 'Gold']}, 
-    {'pmi': 58.0, 'cpi': 5.4, 'expected_regime': 'Inflationary Boom', 'expected_overweight': ['Commodities', 'TIPS'],'expected_underweight': ['Bonds', 'USD']},
-    {'pmi': 47.0, 'cpi': 9.1, 'expected_regime': 'Stagflation', 'expected_overweight': ['Gold', 'Commodities'],'expected_underweight': ['Equities', 'Duration']},
-    {'pmi': 44.0, 'cpi': 1.2, 'expected_regime': 'Risk-Off', 'expected_overweight': ['Long Bonds', 'Gold', 'USD'],'expected_underweight': ['Equities', 'Credit']},
+    {'pmi': 15.0, 'cpi': 2.1, 'expected_regime': 'Goldilocks', 'expected_overweight': ['Equities', 'Credit'],'expected_underweight': ['Commodities', 'Gold']}, 
+    {'pmi': 20.0, 'cpi': 5.4, 'expected_regime': 'Inflationary Boom', 'expected_overweight': ['Commodities', 'TIPS'],'expected_underweight': ['Bonds', 'USD']},
+    {'pmi': -10.0, 'cpi': 9.1, 'expected_regime': 'Stagflation', 'expected_overweight': ['Gold', 'Commodities'],'expected_underweight': ['Equities', 'Duration']},
+    {'pmi': -18.0, 'cpi': 1.2, 'expected_regime': 'Risk-Off', 'expected_overweight': ['Long Bonds', 'Gold', 'USD'],'expected_underweight': ['Equities', 'Credit']},
 ]
 
 for test in test_cases:
