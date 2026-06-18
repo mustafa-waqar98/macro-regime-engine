@@ -67,21 +67,23 @@ for conditions, regime in REGIME_BY_CONDITIONS.items():
 
 print("")
 
-# Test Cases
-test_cases = [
-    {'pmi': 15.0, 'cpi': 2.1, 'expected_regime': 'Goldilocks', 'expected_overweight': ['Equities', 'Credit'],'expected_underweight': ['Commodities', 'Gold']}, 
-    {'pmi': 20.0, 'cpi': 5.4, 'expected_regime': 'Inflationary Boom', 'expected_overweight': ['Commodities', 'TIPS'],'expected_underweight': ['Bonds', 'USD']},
-    {'pmi': -10.0, 'cpi': 9.1, 'expected_regime': 'Stagflation', 'expected_overweight': ['Gold', 'Commodities'],'expected_underweight': ['Equities', 'Duration']},
-    {'pmi': -18.0, 'cpi': 1.2, 'expected_regime': 'Risk-Off', 'expected_overweight': ['Long Bonds', 'Gold', 'USD'],'expected_underweight': ['Equities', 'Credit']},
-]
 
-for test in test_cases:
-    result = classify_regime(test['pmi'], test['cpi'])
-    assert result['regime'] == test['expected_regime'], f" Case {test['pmi']} Expected  {test['expected_regime']} but got {result['regime']}"
-    assert result['overweight'] == test['expected_overweight'], f" Case {test['pmi']} Expected  {test['expected_overweight']} but got {result['overweight']}"
-    assert result['underweight'] == test['expected_underweight'], f" Case {test['pmi']} Expected  {test['expected_underweight']} but got {result['underweight']}"
-    print(f" PMI: {test['pmi']} | CPI: {test['cpi']}% | Regime: {result['regime']}")
-    print(f" Overweight: {result['overweight']}")
-    print(f" Underweight: {result['underweight']}")
-    
-    print()
+if __name__ == '__main__':
+    # Test Cases
+    test_cases = [
+        {'pmi': 15.0, 'cpi': 2.1, 'expected_regime': 'Goldilocks', 'expected_overweight': ['Equities', 'Credit'],'expected_underweight': ['Commodities', 'Gold']}, 
+        {'pmi': 20.0, 'cpi': 5.4, 'expected_regime': 'Inflationary Boom', 'expected_overweight': ['Commodities', 'TIPS'],'expected_underweight': ['Bonds', 'USD']},
+        {'pmi': -10.0, 'cpi': 9.1, 'expected_regime': 'Stagflation', 'expected_overweight': ['Gold', 'Commodities'],'expected_underweight': ['Equities', 'Duration']},
+        {'pmi': -18.0, 'cpi': 1.2, 'expected_regime': 'Risk-Off', 'expected_overweight': ['Long Bonds', 'Gold', 'USD'],'expected_underweight': ['Equities', 'Credit']},
+    ]
+
+    for test in test_cases:
+        result = classify_regime(test['pmi'], test['cpi'])
+        assert result['regime'] == test['expected_regime'], f" Case {test['pmi']} Expected  {test['expected_regime']} but got {result['regime']}"
+        assert result['overweight'] == test['expected_overweight'], f" Case {test['pmi']} Expected  {test['expected_overweight']} but got {result['overweight']}"
+        assert result['underweight'] == test['expected_underweight'], f" Case {test['pmi']} Expected  {test['expected_underweight']} but got {result['underweight']}"
+        print(f" PMI: {test['pmi']} | CPI: {test['cpi']}% | Regime: {result['regime']}")
+        print(f" Overweight: {result['overweight']}")
+        print(f" Underweight: {result['underweight']}")
+        
+        print()
