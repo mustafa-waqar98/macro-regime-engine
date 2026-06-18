@@ -29,6 +29,11 @@ def latest_valid_reading(series):
 
     return reading
 
+def latest_valid_date(series):
+    date = series.dropna().index[-1]
+
+    return date
+
 # Tests
 my_series = pd.Series([100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 200])
 result = cpi_to_yoy(my_series)
@@ -38,4 +43,8 @@ assert result.iloc[-1] == 100, f"Tail is not 100"
 
 my_series1 = pd.Series([np.nan, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, np.nan, np.nan])
 result = latest_valid_reading(my_series1)
+print(result)
+
+my_series2 = pd.Series([np.nan, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, np.nan, np.nan])
+result = latest_valid_date(my_series1)
 print(result)
