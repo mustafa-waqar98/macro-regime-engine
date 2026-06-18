@@ -1,6 +1,7 @@
 import os
 from fredapi import Fred
 import pandas as pd
+import numpy as np
 
 def fetch_cpi():
     api_key = os.environ['FRED_API_KEY']
@@ -23,10 +24,18 @@ def cpi_to_yoy(cpi_level):
     
     return transform
 
+def latest_valid_reading(series):
+    reading = series.dropna().iloc[-1]
+
+    return reading
+
+# Tests
 my_series = pd.Series([100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 200])
 result = cpi_to_yoy(my_series)
 print(result)
 assert result.head().isna().all(), f"Head is not NaN"
 assert result.iloc[-1] == 100, f"Tail is not 100"
 
-print(cpi_to_yoy(fetch_cpi()).tail())
+my_series1 = pd.Series([np.nan, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, np.nan, np.nan])
+result = latest_valid_reading(my_series1)
+print(result)
