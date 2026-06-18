@@ -10,6 +10,14 @@ def fetch_cpi():
 
     return cpi_level
 
+def fetch_pmi():
+    api_key = os.environ['FRED_API_KEY']
+    fred = Fred(api_key=api_key)
+
+    pmi_series = fred.get_series('GACDISA066MSFRBNY')
+
+    return pmi_series
+
 def cpi_to_yoy(cpi_level):
     transform = (cpi_level / cpi_level.shift(12) - 1) * 100
     
