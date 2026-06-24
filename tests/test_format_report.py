@@ -11,4 +11,5 @@ classification = {'regime': 'Inflationary Boom', 'overweight': ['Commodities', '
 test = format_report(cpi_value, cpi_date, pmi_value_raw, pmi_value_smoothed, pmi_date, classification)
 expected = "Current Regime: Inflationary Boom\nPMI (3M avg) as of June 2026: 12.1 (raw: 5.7)\nCPI as of May 2026: 4.0%\nOverweight: Commodities, TIPS\nUnderweight: Bonds, USD"
 assert test == expected, f"\nGOT:\n{test}\nEXPECTED:\n{expected}"
+print(test)
 print('format_report: passed')
