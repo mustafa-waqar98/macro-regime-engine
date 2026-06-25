@@ -5,7 +5,7 @@ def fetch_prices(tickers, start, end):
 
     return prices
 
-tickers = ['SPY', 'TLT', 'DBC', 'TIP', 'BIL', 'LQD', 'GLD']
+tickers = ['SPY', 'AGG', 'DBC', 'TIP', 'BIL', 'LQD', 'GLD', 'TLT']
 '''
 SPY - SPDR S&P 500 ETF Trust
 AGG - iShares Core US Aggregate Bond ETF
