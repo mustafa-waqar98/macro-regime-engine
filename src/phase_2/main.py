@@ -1,5 +1,8 @@
 from src.phase_1.classify_regime import classify_regime
 from src.phase_2.fred_data import fetch_cpi, fetch_pmi, smooth, cpi_to_yoy, latest_valid_reading, latest_valid_date
+from src.phase_2.price_data import fetch_prices
+from src.phase_2.backtest import to_monthly_returns, cumulative
+import matplotlib.pyplot as plt
 
 def date_format(date):
     formatted_date = date.strftime('%B %Y')
@@ -39,3 +42,13 @@ if __name__ == '__main__':
     # Print
     report = format_report(cpi_value, cpi_date, pmi_value_raw, pmi_value_smoothed, pmi_date, classification)
     print(report)
+
+    # Backtest — 60/40 benchmark
+    prices = fetch_prices(['SPY','AGG','DBC','TIP','BIL'], '2010-01-01', None)
+    monthly = to_monthly_returns(prices)
+    benchmark = 0.6 * monthly['SPY'] + 0.4 * monthly['AGG']
+    benchmark = benchmark['2014-01':]
+    growth = cumulative(benchmark)
+    print(f"\n60/40 benchmark, 2014–now: {round(growth.iloc[-1], 2)}x")
+    growth.plot()
+    plt.savefig('benchmark.png')
