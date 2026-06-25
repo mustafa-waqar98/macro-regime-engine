@@ -39,8 +39,21 @@ def latest_valid_date(series):
 
     return date
 
+# Vintage Fetcher
+
+api_key = os.environ['FRED_API_KEY']
+fred = Fred(api_key=api_key)
+
+def collapse_to_snapshot(releases):
+    snapshot = releases.sort_values('realtime_start').drop_duplicates(subset='date', keep='last')
+    return snapshot
+
+def fetch_vintage_snapshot(fred, series, date):
+    releases = fred.get_series_as_of_date(series, date)
+    return collapse_to_snapshot(releases)
+
+# Tests
 if __name__ == '__main__':
-    # Tests
     my_series = pd.Series([100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 200])
     result = cpi_to_yoy(my_series)
     print(result)
@@ -56,3 +69,10 @@ if __name__ == '__main__':
     print(result)
 
     print(smooth(pd.Series([3, 6, 9, 12])))
+    
+    x = fetch_vintage_snapshot(fred, 'CPIAUCSL', '2015-12-01')
+    print(x)
+
+    mask = pd.to_datetime(x['date']) == '2015-01-01'
+    jan_2015 = x[mask]
+    print(jan_2015)
