@@ -3,6 +3,7 @@ from src.phase_2.fred_data import fetch_cpi, fetch_pmi, smooth, cpi_to_yoy, late
 from src.phase_2.price_data import fetch_prices
 from src.phase_2.backtest import to_monthly_returns, cumulative
 import matplotlib.pyplot as plt
+import pandas as pd
 
 def date_format(date):
     formatted_date = date.strftime('%B %Y')
