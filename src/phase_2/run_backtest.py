@@ -1,4 +1,4 @@
-from src.phase_2.fred_data import fetch_cpi, fetch_pmi, smooth, cpi_to_yoy
+from src.phase_2.fred_data import fetch_cpi, fetch_pmi, smooth, cpi_to_yoy, fetch_vintage_snapshot, snapshot_to_series, latest_valid_reading
 from src.phase_2.backtest import build_weights_table
 from src.phase_2.price_data import fetch_prices
 from src.phase_2.backtest import to_monthly_returns, cumulative
@@ -6,6 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from fredapi import Fred
+import time
 
 api_key = os.environ['FRED_API_KEY']
 fred = Fred(api_key=api_key)
@@ -20,6 +21,38 @@ def build_current_inputs(cpi_raw, pmi_raw):
         'cpi': cpi_yoy,
         'pmi': pmi_smoothed,
         }).dropna()
+
+    return inputs
+
+def build_vintage_inputs(fred):
+    cache_path = 'data/vintage_inputs.csv'
+
+    if os.path.exists(cache_path):
+        return pd.read_csv(cache_path, index_col='date', parse_dates=True)
+
+    as_of_dates = pd.date_range('2014-03-31', pd.Timestamp.today(), freq='ME')
+    rows = []
+
+    for as_of_date in as_of_dates:
+        time.sleep(1)
+        print(as_of_date)
+        cpi_snap = fetch_vintage_snapshot(fred, 'CPIAUCSL', as_of_date)
+        cpi_series = snapshot_to_series(cpi_snap)
+        cpi = latest_valid_reading(cpi_to_yoy(cpi_series))
+
+        pmi_snap = fetch_vintage_snapshot(fred, 'GACDISA066MSFRBNY', as_of_date)
+        pmi_series = snapshot_to_series(pmi_snap)
+        pmi = latest_valid_reading(smooth(pmi_series))
+
+        rows.append({
+            'date': as_of_date,
+            'cpi': cpi,
+            'pmi': pmi
+        })
+
+    os.makedirs('data', exist_ok=True)
+    inputs = pd.DataFrame(rows).set_index('date').dropna()
+    inputs.to_csv(cache_path)
 
     return inputs
 
