@@ -4,6 +4,11 @@ from src.phase_2.price_data import fetch_prices
 from src.phase_2.backtest import to_monthly_returns, cumulative
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
+from fredapi import Fred
+
+api_key = os.environ['FRED_API_KEY']
+fred = Fred(api_key=api_key)
 
 tickers = ['SPY', 'DBC', 'TIP', 'BIL', 'LQD', 'GLD', 'TLT']
 
@@ -19,8 +24,8 @@ def build_current_inputs(cpi_raw, pmi_raw):
     return inputs
 
 if __name__ == '__main__':
-    cpi_raw = fetch_cpi()
-    pmi_raw = fetch_pmi()
+    cpi_raw = fetch_cpi(fred)
+    pmi_raw = fetch_pmi(fred)
 
     inputs = build_current_inputs(cpi_raw, pmi_raw)
 

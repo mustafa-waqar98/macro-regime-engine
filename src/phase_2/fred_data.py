@@ -3,18 +3,12 @@ from fredapi import Fred
 import pandas as pd
 import numpy as np
 
-def fetch_cpi():
-    api_key = os.environ['FRED_API_KEY']
-    fred = Fred(api_key=api_key)
-
+def fetch_cpi(fred):
     cpi_level = fred.get_series('CPIAUCSL')
 
     return cpi_level
 
-def fetch_pmi():
-    api_key = os.environ['FRED_API_KEY']
-    fred = Fred(api_key=api_key)
-
+def fetch_pmi(fred):
     pmi_series = fred.get_series('GACDISA066MSFRBNY')
 
     return pmi_series
@@ -41,19 +35,19 @@ def latest_valid_date(series):
 
 # Vintage Fetcher
 
-api_key = os.environ['FRED_API_KEY']
-fred = Fred(api_key=api_key)
-
 def collapse_to_snapshot(releases):
     snapshot = releases.sort_values('realtime_start').drop_duplicates(subset='date', keep='last')
     return snapshot
 
-def fetch_vintage_snapshot(fred, series, date):
-    releases = fred.get_series_as_of_date(series, date)
+def fetch_vintage_snapshot(fred, series, as_of_date):
+    releases = fred.get_series_as_of_date(series, as_of_date)
     return collapse_to_snapshot(releases)
 
 # Tests
 if __name__ == '__main__':
+    api_key = os.environ['FRED_API_KEY']
+    fred = Fred(api_key=api_key)
+
     my_series = pd.Series([100, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 200])
     result = cpi_to_yoy(my_series)
     print(result)

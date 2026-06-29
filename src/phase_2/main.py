@@ -4,6 +4,8 @@ from src.phase_2.price_data import fetch_prices
 from src.phase_2.backtest import to_monthly_returns, cumulative
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
+from fredapi import Fred
 
 def date_format(date):
     formatted_date = date.strftime('%B %Y')
@@ -23,15 +25,17 @@ def format_report(cpi_value, cpi_date, pmi_value_raw, pmi_value_smoothed, pmi_da
     return formatted_output
 
 if __name__ == '__main__':
+    api_key = os.environ['FRED_API_KEY']
+    fred = Fred(api_key=api_key)
 
     # CPI
-    cpi_raw = fetch_cpi()
+    cpi_raw = fetch_cpi(fred)
     cpi_yoy = cpi_to_yoy(cpi_raw)
     cpi_value = latest_valid_reading(cpi_yoy)
     cpi_date = latest_valid_date(cpi_yoy)
 
     # PMI
-    pmi_series = fetch_pmi()
+    pmi_series = fetch_pmi(fred)
     smoothed_pmi = smooth(pmi_series)
     pmi_value_raw = latest_valid_reading(pmi_series)
     pmi_value_smoothed = latest_valid_reading(smoothed_pmi)
