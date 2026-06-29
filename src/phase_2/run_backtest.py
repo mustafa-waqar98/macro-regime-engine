@@ -57,10 +57,7 @@ def build_vintage_inputs(fred):
     return inputs
 
 if __name__ == '__main__':
-    cpi_raw = fetch_cpi(fred)
-    pmi_raw = fetch_pmi(fred)
-
-    inputs = build_current_inputs(cpi_raw, pmi_raw)
+    inputs = build_vintage_inputs(fred)
 
     weights = build_weights_table(inputs, tickers)
     weights = weights.shift(1)
@@ -83,4 +80,4 @@ if __name__ == '__main__':
     plt.legend()
     print(f"\nStrategy, 2014-2026-05: {round(strategy_growth.iloc[-1], 2)}x")
     print(f"\n60/40 Benchmark, 2014-2026-05: {round(benchmark_growth.iloc[-1], 2)}x")
-    plt.savefig('results/strategy_vs_benchmark.png')
+    plt.savefig('results/strategy_vs_benchmark_vintage.png')
