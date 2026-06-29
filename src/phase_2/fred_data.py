@@ -39,6 +39,13 @@ def collapse_to_snapshot(releases):
     snapshot = releases.sort_values('realtime_start').drop_duplicates(subset='date', keep='last')
     return snapshot
 
+def snapshot_to_series(snap):
+    series = pd.Series(
+        snap['value'].astype(float).values,
+        index=pd.to_datetime(snap['date']).values
+    ).sort_index()
+    return series
+
 def fetch_vintage_snapshot(fred, series, as_of_date):
     releases = fred.get_series_as_of_date(series, as_of_date)
     return collapse_to_snapshot(releases)
