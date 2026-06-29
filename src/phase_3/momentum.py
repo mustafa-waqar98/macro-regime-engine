@@ -7,12 +7,10 @@ def momentum(series, window=3, delta=3):
     return result
 
 if __name__ == '__main__':
-    path = pd.read_csv('data/vintage_inputs.csv')
+    path = pd.read_csv('data/vintage_inputs.csv', index_col='date', parse_dates=True)
     series = path['pmi']
     values = momentum(series)
-    print(values.head())
-    print(values.tail())
     print(values.iloc[5])
     print(values.iloc[9])
-    
-
+    print(values.loc['2019-10':'2020-12'])
+    print(values.loc['2021-06':'2022-12'])
