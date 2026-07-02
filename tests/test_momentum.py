@@ -1,7 +1,8 @@
 from src.phase_3.momentum import momentum
-from src.phase_3.momentum_tilt import lookup, momentum_to_state
+from src.phase_3.momentum_tilt import lookup, momentum_to_state, apply_tilt
 import pytest
 import pandas as pd
+from pandas.testing import assert_series_equal
 
 def test_momentum():
     series = pd.Series([
@@ -25,3 +26,9 @@ def test_lookup():
     assert lookup('Goldilocks', 'flat') == 'hold'
     assert lookup('Stagflation', 'flat') == 'hold'
     assert lookup('Goldilocks', 'none') == 'hold'
+
+def test_apply_tilt():
+    row = pd.Series({'TLT': 0.34, 'GLD': 0.33, 'BIL': 0.33})
+    result = apply_tilt(row, 'de-risk', 0.20, 0.10)
+    expected = pd.Series({'TLT': 0.238, 'GLD': 0.231, 'BIL': 0.531})
+    assert_series_equal(result, expected)

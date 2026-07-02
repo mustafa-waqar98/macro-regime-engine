@@ -1,4 +1,6 @@
 from src.phase_1.classify_regime import classify_regime
+from src.phase_3.momentum import momentum
+from src.phase_3.momentum_tilt import lookup, momentum_to_state, apply_tilt
 import pandas as pd
 
 CATEGORY_TO_TICKER = {
@@ -35,11 +37,15 @@ def weights_from_classification(classification, tickers):
 
     return weights
 
-def build_weights_table(inputs, tickers):
+def build_weights_table(inputs, tickers, states, buffer=0.20, magnitude=0.10):
     rows = {}
     for date, row in inputs.iterrows():
         classification = classify_regime(row['pmi'], row['cpi'])
-        rows[date] = weights_from_classification(classification, tickers)
-    
+        base = weights_from_classification(classification, tickers)
+        state = states[date]
+        stance = lookup(classification['regime'], state)
+        tilted_row = apply_tilt(pd.Series(base), stance, buffer, magnitude)
+        rows[date] = tilted_row
+
     return pd.DataFrame(rows).T
     

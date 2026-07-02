@@ -30,11 +30,23 @@ def momentum_to_state(momentum, deadband=1.0):
     else:
         return 'flat'
     
+def apply_tilt(weights, stance, buffer, magnitude):
+    if magnitude > buffer:
+        raise ValueError('magnitude must be lesser than or equal to buffer')
 
-for val in [2.5, -2.5, 0.3, -0.8, float('nan')]:
-    print(val, '->', momentum_to_state(val))
-    print(lookup('Goldilocks', 'accel'))
-    print(lookup('Risk-Off', 'accel'))
-    print(lookup('Stagflation', 'decel'))
-    print(lookup('Goldilocks', 'none'))
+    sign = {'lean-in': +1, 'hold': 0, 'de-risk': -1}
+    factor = (1 - buffer) + sign[stance] * magnitude
+
+    tilt = weights * factor
+    tilt['BIL'] = tilt['BIL'] + (1 - factor)
+
+    return tilt
+
+if __name__ == '__main__':
+    for val in [2.5, -2.5, 0.3, -0.8, float('nan')]:
+        print(val, '->', momentum_to_state(val))
+        print(lookup('Goldilocks', 'accel'))
+        print(lookup('Risk-Off', 'accel'))
+        print(lookup('Stagflation', 'decel'))
+        print(lookup('Goldilocks', 'none'))
 

@@ -2,6 +2,9 @@ from src.phase_2.fred_data import fetch_cpi, fetch_pmi, smooth, cpi_to_yoy, fetc
 from src.phase_2.backtest import build_weights_table
 from src.phase_2.price_data import fetch_prices
 from src.phase_2.backtest import to_monthly_returns, cumulative
+from src.phase_3.momentum import momentum
+from src.phase_3.momentum_tilt import momentum_to_state, apply_tilt, lookup
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
@@ -58,8 +61,9 @@ def build_vintage_inputs(fred):
 
 if __name__ == '__main__':
     inputs = build_vintage_inputs(fred)
-
-    weights = build_weights_table(inputs, tickers)
+    mom = momentum(inputs['pmi'])
+    states = mom.apply(momentum_to_state)
+    weights = build_weights_table(inputs, tickers, states)
     weights = weights.shift(1)
 
     prices = fetch_prices(tickers, '2010-01-01', None)
