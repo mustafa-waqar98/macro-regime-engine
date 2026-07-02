@@ -11,9 +11,6 @@ import os
 from fredapi import Fred
 import time
 
-api_key = os.environ['FRED_API_KEY']
-fred = Fred(api_key=api_key)
-
 tickers = ['SPY', 'DBC', 'TIP', 'BIL', 'LQD', 'GLD', 'TLT']
 
 def build_current_inputs(cpi_raw, pmi_raw):
@@ -60,6 +57,9 @@ def build_vintage_inputs(fred):
     return inputs
 
 if __name__ == '__main__':
+    api_key = os.environ['FRED_API_KEY']
+    fred = Fred(api_key=api_key)
+
     inputs = build_vintage_inputs(fred)
     mom = momentum(inputs['pmi'])
     states = mom.apply(momentum_to_state)
