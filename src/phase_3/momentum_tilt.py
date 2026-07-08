@@ -15,10 +15,10 @@ TILT_TABLE = {
     ('Risk-Off', 'flat'): 'hold',
 }
 
-def lookup(regime, state):
+def lookup(regime, state, table=TILT_TABLE):
     if state == 'none':
         return 'hold'
-    return TILT_TABLE[(regime, state)]
+    return table[(regime, state)]
 
 def momentum_to_state(momentum, deadband=1.0):
     if pd.isna(momentum):
