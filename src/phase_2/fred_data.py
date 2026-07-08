@@ -41,7 +41,7 @@ def collapse_to_snapshot(releases):
 
 def snapshot_to_series(snap):
     series = pd.Series(
-        pd.to_numeric(snap['value'], errors='coerce').values,
+        pd.to_numeric(snap['value'], errors='coerce').astype(float).values,
         index=pd.to_datetime(snap['date']).values
     ).sort_index()
     return series
