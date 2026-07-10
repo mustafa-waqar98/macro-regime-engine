@@ -27,6 +27,11 @@ about what was actually knowable at each decision date.
   PMI **as they were actually printed on that decision date** — revisions
   and publication lag included. No lookahead. Compares the strategy to a
   passive 60/40 benchmark.
+- **Momentum tilt — tested and falsified.** Three attempts to add a
+  timing edge on top of the level-based classifier (a widened deadband,
+  a CPI-sign-conditioned tilt table, and sticky-flat hysteresis) were
+  built and backtested against the point-in-time spine. All three failed
+  a state-occupancy check — see below.
 
 ### The honest result
 
@@ -40,9 +45,7 @@ This is the **first end-to-end backtest** — a deliberately simple v1:
 binary level thresholds, equal-weight allocation, hard regime flips. It
 underperforms passive 60/40 over this window (it spends time out of
 equities through an equity bull decade and pays transition costs on every
-flip), which is exactly the honest baseline to build from. The roadmap
-below — a momentum axis, gradual rebalancing, risk-weighting — is aimed
-at closing that gap.
+flip), which is exactly the honest baseline to build from.
 
 The point of getting here first was an honest **measurement
 infrastructure**, not a winning number. With that in place, the
@@ -50,6 +53,26 @@ infrastructure**, not a winning number. With that in place, the
 is the lookahead bias, quantified** — the performance that disappears
 once the backtest can only see what was knowable in real time. Every
 future improvement gets scored against this same honest baseline.
+
+### The momentum tilt: tested and killed
+
+Phase 3 asked a follow-on question: does *momentum* — the direction PMI
+and CPI are moving, not just their level — add a timing edge on top of
+the regime classifier? Three mechanisms were tried. None survived.
+
+| Mechanism | Headline result | Why it failed |
+|---|---|---|
+| Deadband widening | No reduction in whipsaw | The flat state isn't sticky — it just splits every flip into an enter/exit pair |
+| CPI sign-table | −0.064x, below the no-tilt control | A single momentum reading can't distinguish a 2021 rally from a 2022 selloff — both carry the same acceleration sign, so the same tilt cell fires in both, and the rally gain is outweighed by the selloff cost |
+| Sticky-flat hysteresis | 2.07x → 2.22x headline gain | Killed by a state-occupancy check: sticky spends 0 months flat vs. 97 for the symmetric control — the "gain" is uncompensated equity exposure across a bull market, not timing skill |
+
+The transferable result isn't a working tilt — it's the diagnostic that
+caught the fake one. A cumulative-return curve alone can't distinguish
+real timing skill from being long equities through a bull market;
+checking **time spent in each state** can. That check is now a standing
+requirement for anything built on top of this engine going forward.
+
+Full writeup: [`src/phase_3/phase_3_findings.md`](src/phase_3/phase_3_findings.md).
 
 ### The four regimes
 
@@ -77,11 +100,12 @@ the model couldn't have seen.
 
 ## Planned
 
-- **Momentum axis** (direction of travel, not just level) — the Greetham
-  Investment Clock conversion. Identical PMI/CPI levels mean opposite
-  things depending on whether they're accelerating or rolling over; the
-  current level-only threshold is blind to this exactly at inflection
-  points. Next up.
+- **Regime-mispricing gap (in scoping).** Being in "Inflationary Boom" is
+  only an edge if the market hasn't already priced that regime in.
+  Testing whether conditioning realized macro momentum (PMI-z, CPI-z)
+  against independent market-implied expectations — 10-year breakeven
+  inflation, yield curve slope — can separate a regime that's already
+  priced in from one that's a genuine surprise.
 - **Allocation refinements** — gradual rebalancing vs. hard flips,
   vol/risk-weighting vs. equal dollars.
 - **ML classification layer** — K-means clustering + PCA as a second,
@@ -104,4 +128,5 @@ Planned: numpy, scikit-learn (ML layer), Streamlit (dashboard), Plotly (viz).
 
 - **Phase 1** (foundations + rule-based classifier): **done.**
 - **Phase 2** (live FRED data → point-in-time backtester): **done.**
-- **Phase 3** (momentum axis + allocation refinements): **in progress.**
+- **Phase 3** (momentum tilt): **done — tested and falsified; findings above.**
+- **Phase 4** (regime-mispricing gap): **in scoping.**
